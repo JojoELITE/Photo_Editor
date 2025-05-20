@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { ImagePlus, Download, RotateCcw, Info } from "lucide-react";
+import Image from "next/image";
 
 type SkinSettings = {
   enabled: boolean;
@@ -55,14 +56,14 @@ export default function SkinCorrectionTool() {
   };
 
   // Traitement principal avec suivi des modifications
-  const processSkin = async () => {
+  const processSkin = useCallback(async () => {
     if (!originalImage || !canvasRef.current) return;
 
     setIsProcessing(true);
     const newAdjustmentLog: AdjustmentLog = [];
 
     try {
-      const img = new Image();
+      const img = new window.Image();
       img.src = originalImage;
 
       await new Promise((resolve) => {
@@ -217,7 +218,7 @@ export default function SkinCorrectionTool() {
     } finally {
       setIsProcessing(false);
     }
-  };
+  }, [originalImage, skinSettings]);
 
   // Gestion des images
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -357,7 +358,7 @@ export default function SkinCorrectionTool() {
     if (originalImage && skinSettings.enabled) {
       processSkin();
     }
-  }, [skinSettings, originalImage]);
+  }, [skinSettings, originalImage, processSkin]);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -392,21 +393,29 @@ export default function SkinCorrectionTool() {
                       <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
                         Original
                       </div>
-                      <img
-                        src={originalImage || ""}
-                        alt="Original"
-                        className="w-full h-auto"
-                      />
+                      <div className="relative w-full h-full aspect-square">
+                        <Image
+                          src={originalImage || ""}
+                          alt="Original"
+                          fill
+                          className="object-contain"
+                          unoptimized
+                        />
+                      </div>
                     </div>
                     <div className="relative">
                       <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
                         Retouché
                       </div>
-                      <img
-                        src={processedImage}
-                        alt="Retouché"
-                        className="w-full h-auto"
-                      />
+                      <div className="relative w-full h-full aspect-square">
+                        <Image
+                          src={processedImage}
+                          alt="Retouché"
+                          fill
+                          className="object-contain"
+                          unoptimized
+                        />
+                      </div>
                     </div>
                   </div>
 

@@ -4,14 +4,12 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-// Updated Preset type to match user's definition
 export type Preset = {
   name: string;
   description: string;
   params: Record<string, number>;
 };
 
-// New list of presets provided by the user
 export const PRESETS: Preset[] = [
   {
     name: "Lumineux & doux",
@@ -116,7 +114,7 @@ export const PRESETS: Preset[] = [
 ];
 
 interface AdjustmentPresetsProps {
-  onApplyPreset: (params: Record<string, number>) => void; // Updated to use Record<string, number>
+  onApplyPreset: (params: Record<string, number>) => void;
   disabled?: boolean;
 }
 
@@ -132,7 +130,7 @@ export function AdjustmentPresets({ onApplyPreset, disabled }: AdjustmentPresets
 
   return (
     <div className="p-4 border rounded-lg shadow bg-white/50 backdrop-blur-sm w-full max-w-md mt-8">
-      <h3 className="text-lg font-semibold mb-3 text-gray-700">Palettes d'ajustements prédéfinis</h3>
+      <h3 className="text-lg font-semibold mb-3 text-gray-700">Palettes d&apos;ajustements prédéfinis</h3>
       <div className="flex flex-col sm:flex-row gap-3 items-center">
         <Select 
           value={selectedPresetName} 
@@ -144,14 +142,17 @@ export function AdjustmentPresets({ onApplyPreset, disabled }: AdjustmentPresets
           </SelectTrigger>
           <SelectContent>
             {PRESETS.map((preset) => (
-              // Using preset.name as key and value, assuming names are unique
               <SelectItem key={preset.name} value={preset.name}>
                 {preset.name} - <span className="text-xs text-gray-500">{preset.description}</span>
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
-        <Button onClick={handleApply} disabled={disabled || !selectedPresetName} className="w-full sm:w-auto bg-green-500 hover:bg-green-600">
+        <Button 
+          onClick={handleApply} 
+          disabled={disabled || !selectedPresetName} 
+          className="w-full sm:w-auto bg-green-500 hover:bg-green-600"
+        >
           Appliquer les ajustements
         </Button>
       </div>

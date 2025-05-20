@@ -27,7 +27,7 @@ export const applyImageAdjustments = (
 
   const internalBrightness = 100 + brightness;
   const internalContrast = 100 + contrast;
-  let internalSaturation = grayscale === 1 ? 0 : 100 + saturation;
+  const internalSaturation = grayscale === 1 ? 0 : 100 + saturation;
 
   for (let i = 0; i < data.length; i += 4) {
     let r = data[i];
